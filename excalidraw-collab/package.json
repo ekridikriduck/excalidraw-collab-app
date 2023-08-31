@@ -2,6 +2,7 @@
   "name": "excalidraw-collab",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "@excalidraw/excalidraw": "^0.15.3",
     "@rainbow-me/rainbowkit": "^1.0.9",

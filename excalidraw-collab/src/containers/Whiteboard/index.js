@@ -54,10 +54,12 @@ export const Whiteboard = () => {
 
   useEffect(() => {
     if (!excalidrawApi || !address) return;
-    const urlHash = window.location.hash.slice(1);
-    if (!urlHash) navigate("/");
-    const urlParams = new URLSearchParams(urlHash);
-    const roomId = urlParams.get("room");
+    const { search } = location;
+    if (!search) navigate("/");
+    const searchParams = new URLSearchParams(search);
+
+    const roomId = searchParams.get("room");
+
     if (!roomId) navigate("/");
 
     const socket = socketIOClient(SOCKET_URL, {
@@ -71,7 +73,7 @@ export const Whiteboard = () => {
     return () => {
       socket.disconnect();
     };
-  }, [address, excalidrawApi, navigate]);
+  }, [address, excalidrawApi, location, navigate]);
 
   useEffect(() => {
     if (!isConnected && !connectModalOpen) {
@@ -81,8 +83,8 @@ export const Whiteboard = () => {
 
   const onCopyShareLink = () => {
     const origin = window.location.origin;
-    const { pathname, hash } = location;
-    const url = origin + pathname + hash;
+    const { pathname, search } = location;
+    const url = origin + pathname + search;
     navigator.clipboard.writeText(url);
     setLinkCopied(() => {
       setTimeout(() => {

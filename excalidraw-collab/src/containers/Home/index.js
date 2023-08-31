@@ -29,7 +29,7 @@ export const Home = () => {
   useEffect(() => {
     if (!isConnected) return;
     const roomId = v4();
-    navigate(`/whiteboard#room=${roomId}`);
+    navigate(`/whiteboard?room=${roomId}`);
   }, [isConnected, navigate]);
 
   return (

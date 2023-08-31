@@ -2,7 +2,7 @@ import "./main.scss";
 import "@rainbow-me/rainbowkit/styles.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import App from "./App";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
@@ -13,8 +13,6 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
   [mainnet, polygon],
   [publicProvider()]
 );
-
-console.log(WC_PROJECT_ID);
 
 const { connectors } = getDefaultWallets({
   appName: "RainbowKit demo",
@@ -31,12 +29,12 @@ const wagmiConfig = createConfig({
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <HashRouter>
       <WagmiConfig config={wagmiConfig}>
         <RainbowKitProvider chains={chains}>
           <App />
         </RainbowKitProvider>
       </WagmiConfig>
-    </BrowserRouter>
+    </HashRouter>
   </React.StrictMode>
 );
