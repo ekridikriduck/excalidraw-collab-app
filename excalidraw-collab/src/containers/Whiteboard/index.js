@@ -84,7 +84,7 @@ export const Whiteboard = () => {
   const onCopyShareLink = () => {
     const origin = window.location.origin;
     const { pathname, search } = location;
-    const url = origin + pathname + search;
+    const url = origin + "/#" + pathname + search;
     navigator.clipboard.writeText(url);
     setLinkCopied(() => {
       setTimeout(() => {
