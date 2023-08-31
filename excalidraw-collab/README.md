@@ -31,3 +31,4 @@ Intall dependencies with `yarn` and run the app with `yarn start`.
 
 Make sure that the collab server is running on port `8080`
 
+Demo at - https://square-violet-9007.on.fleek.co/
