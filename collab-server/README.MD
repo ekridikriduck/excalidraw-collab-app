@@ -14,3 +14,4 @@ Intall dependencies with `yarn` and run the app with `yarn dev`.
 
 By default collab server will start on port `8080`
 
+Deployed on render - https://render.com
