@@ -5,6 +5,7 @@ import {
   EVENT_TYPE_MAP,
   SOCKET_ON_EVENT_MAP,
 } from "./constants";
+import { throttle } from "lodash";
 
 class SocketWrapper {
   excalidrawApi = null;
@@ -101,6 +102,24 @@ class SocketWrapper {
         elements: scene,
       },
     });
+    this.throttledSaveSceneOnServer(scene);
+  }
+
+  throttledSaveSceneOnServer = throttle((scene) => {
+    this.saveSceneOnServer(scene);
+  }, 10000);
+
+  saveSceneOnServer(scene) {
+    if (!this.socketClient || !this.socketRoomId) return;
+    this.socketClient.emit(EMIT_EVENT_MAP.SAVE_SCENE, this.socketRoomId, {
+      elements: scene,
+    });
+  }
+
+  disconnect() {
+    if (!this.socketClient) return;
+    this.socketClient.disconnect();
+    this.socketClient = null;
   }
 }
 

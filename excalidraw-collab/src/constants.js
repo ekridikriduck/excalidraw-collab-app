@@ -5,6 +5,7 @@ export const EMIT_EVENT_MAP = {
   JOIN_ROOM: "join-room",
   SERVER_VOLATILE_BROADCAST: "server-volatile-broadcast",
   SERVER_BROADCAST: "server-broadcast",
+  SAVE_SCENE: "save-scene",
 };
 
 export const EVENT_TYPE_MAP = {

@@ -81,6 +81,19 @@ export const Whiteboard = () => {
     }
   }, [connectModalOpen, isConnected, openConnectModal]);
 
+  useEffect(() => {
+    return () => {
+      let lastScene = null;
+      if (excalidrawApi) {
+        lastScene = excalidrawApi.getSceneElementsIncludingDeleted();
+      }
+      if (socketWrapper) {
+        if (lastScene) socketWrapper.saveSceneOnServer(lastScene);
+        socketWrapper.disconnect();
+      }
+    };
+  }, [excalidrawApi, socketWrapper]);
+
   const onCopyShareLink = () => {
     const origin = window.location.origin;
     const { pathname, search } = location;

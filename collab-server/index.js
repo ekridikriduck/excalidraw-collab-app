@@ -10,6 +10,8 @@ const EVENT_MAP = {
   DISCONNECT: "disconnect",
   CONNECTION: "connection",
   DISCONNECTING: "disconnecting",
+  SAVE_SCENE: "save-scene",
+  SCENE_UPDATE: "SCENE_UPDATE",
 };
 
 const app = express();
@@ -20,6 +22,12 @@ const server = createServer(app);
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+// This can be reconciled on backend as we do on frontend
+// that will require saving states by roomID and socketID
+// and then we can reconcile elements and send the latest state to the client
+// also could be a better implementation of saved states
+const INTERNAL_SCENE_MAP_BY_ROOM_ID = {};
 
 try {
   const io = new SocketIO(server, {
@@ -44,11 +52,24 @@ try {
       } else {
         socket.broadcast.to(roomID).emit("new-user", socket.id);
       }
+      const savedRoomState = INTERNAL_SCENE_MAP_BY_ROOM_ID[roomID];
+      if (savedRoomState) {
+        io.to(`${socket.id}`).emit(EVENT_MAP.CLIENT_BROADCAST, {
+          type: EVENT_MAP.SCENE_UPDATE,
+          payload: savedRoomState,
+        });
+      }
 
       io.in(roomID).emit(
         EVENT_MAP.ROOM_USER_CHANGE,
         sockets.map((socket) => socket.id)
       );
+    });
+
+    // on save scene
+    socket.on(EVENT_MAP.SAVE_SCENE, (roomID, data) => {
+      console.log("save scene - room ID", roomID, new Date().getTime());
+      INTERNAL_SCENE_MAP_BY_ROOM_ID[roomID] = data;
     });
 
     // on broadcast
